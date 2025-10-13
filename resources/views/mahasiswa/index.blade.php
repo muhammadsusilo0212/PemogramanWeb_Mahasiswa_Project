@@ -28,23 +28,35 @@ rel="stylesheet">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="../matakuliah/">Mata Kuliah</a>
         </li>
-        
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="../ruang_kuliah/">Ruang Kuliah</a>
+        </li>
+      
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
-    
 
+// Cek jika user sudah login dan memiliki role 'admin'
+// Jika ya, tampilkan konten halaman mahasiswa
+// Jika tidak, tampilkan pesan akses ditolak
+// Ganti 'role' dengan nama kolom yang sesuai di tabel users Anda
+@if(Auth::check() && Auth::user()->role == 'admin') 
     <div class="container mt-5">
          <h2>Daftar Data Mahasiswa</h2> 
         <hr> 
-        <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary mb
-3">Tambah Mahasiswa</a> 
- 
+        <a href="{{ route('mahasiswa.showImportForm') }}" class="btn btn-success mb-3">Impor dari Excel</a>
+        <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary mb-3">Tambah Mahasiswa</a>
+        <a href="{{ route('mahasiswa.cetakPdf') }}" class="btn btn-danger mb-3" target="_blank">Cetak PDF</a>
+        
         @if (session('success')) 
         <div class="alert alert-success"> 
             {{ session('success') }} 
         </div> 
         @endif 
+@endif 
  
         <table class="table table-bordered"> 
             <thead class="table-dark"> 
@@ -56,6 +68,7 @@ rel="stylesheet">
                     <th>Prodi</th> 
                     <th>Angkatan</th> 
                     <th>Tgl Lahir</th> 
+                    <th>Actions</th>
                 </tr> 
             </thead> 
             <tbody> 
@@ -67,7 +80,21 @@ rel="stylesheet">
                     <td>{{ $mahasiswa->jenis_kelamin }}</td> 
                     <td>{{ $mahasiswa->prodi }}</td> 
                     <td>{{ $mahasiswa->tahun_angkatan }}</td> 
-                    <td>{{ $mahasiswa->tanggal_lahir }}</td> 
+                    <td>{{ $mahasiswa->tanggal_lahir }}</td>
+                    <td>
+                      
+                      // Tampilkan tombol Edit dan Delete hanya jika user adalah admin
+                      @if(Auth::check() && Auth::user()->role == 'admin')
+                      
+                        <a href="{{ route('mahasiswa.edit', $mahasiswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form onsubmit="return confirm('Are you sure?')" action="{{ route('mahasiswa.destroy', $mahasiswa->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                      @endif
+                    </td>
+                    
                 </tr> 
                 @empty 
                 <tr> 

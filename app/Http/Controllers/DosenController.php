@@ -46,4 +46,41 @@ class DosenController extends Controller
         return redirect()->route('dosen.index')
                          ->with('success', 'Data dosen berhasil ditambahkan.');
     }
+    /**
+     * Menampilkan form untuk mengedit data dosen.
+     */
+    public function edit(Dosen $dosen)
+    {
+        return view('dosen.edit', compact('dosen'));    
+    }
+    /**
+     * Mengupdate data dosen.
+     */
+    public function update(Request $request, Dosen $dosen)
+    {
+        // Validasi input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'nidn' => 'required|string|unique:dosens,nidn,'.$dosen->id.'|max:10',
+            'jabatan' => 'required|string|max:255',
+            'email' => 'required|email|unique:dosens,email,'.$dosen->id.'|max:255',
+            'telepon' => 'required|string|max:15',
+        ]);
+
+        // Update data di database
+        $dosen->update($request->all());
+
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('dosen.index')
+                         ->with('success', 'Data dosen berhasil diupdate.');
+    }
+    /**
+     * Menghapus data dosen.
+     */
+    public function destroy(Dosen $dosen)
+    {
+        $dosen->delete();
+        return redirect()->route('dosen.index')
+                         ->with('success', 'Data dosen berhasil dihapus.');
+    }
 }

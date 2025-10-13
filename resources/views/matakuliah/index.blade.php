@@ -38,6 +38,7 @@ rel="stylesheet">
     <div class="container mt-5">
          <h2>Daftar Data Matakuliah</h2> 
         <hr> 
+        <a href="{{ route('matakuliah.showImportForm') }}" class="btn btn-success mb-3">Import dari Excel</a>
         <a href="{{ route('matakuliah.create') }}" class="btn btn-primary mb-3">Tambah Matakuliah</a> 
  
         @if (session('success')) 
@@ -54,6 +55,7 @@ rel="stylesheet">
                     <th>Nama_MK</th> 
                     <th>SKS</th> 
                     <th>Semester</th> 
+                    <th>Aksi</th>
                 </tr> 
             </thead> 
             <tbody> 
@@ -63,7 +65,16 @@ rel="stylesheet">
                     <td>{{ $matakuliah->kode_mk }}</td> 
                     <td>{{ $matakuliah->nama_mk }}</td> 
                     <td>{{ $matakuliah->sks }}</td> 
-                    <td>{{ $matakuliah->semester }}</td> 
+                    <td>{{ $matakuliah->semester }}</td>
+                    <td> 
+                        <a href="{{ route('matakuliah.edit', $matakuliah->id) }}" class="btn btn-warning btn-sm">Edit</a> 
+ 
+                        <form action="{{ route('matakuliah.destroy', $matakuliah->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');"> 
+                            @csrf 
+                            @method('DELETE') 
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button> 
+                        </form> 
+                    </td>
                 </tr> 
                 @empty 
                 <tr> 

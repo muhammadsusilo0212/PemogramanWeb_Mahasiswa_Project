@@ -55,7 +55,8 @@ rel="stylesheet">
                     <th>NIDN</th> 
                     <th>JABATAN</th> 
                     <th>Email</th>
-                    <th>TELEPON</th> 
+                    <th>TELEPON</th>
+                    <th>Aksi</th> 
                 </tr> 
             </thead> 
             <tbody> 
@@ -66,7 +67,16 @@ rel="stylesheet">
                     <td>{{ $dosen->nidn}}</td> 
                     <td>{{ $dosen->jabatan}}</td> 
                     <td>{{ $dosen->email}}</td>
-                    <td>{{ $dosen->telepon}}</td> 
+                    <td>{{ $dosen->telepon}}</td>
+                    <td> 
+                        <a href="{{ route('dosen.edit', $dosen->id) }}" class="btn btn-warning btn-sm">Edit</a> 
+ 
+                        <form action="{{ route('dosen.destroy', $dosen->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');"> 
+                            @csrf 
+                            @method('DELETE') 
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button> 
+                        </form> 
+                    </td>
                 </tr> 
                 @empty 
                 <tr> 
