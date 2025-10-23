@@ -1,57 +1,98 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Tambah Data Dosen</title> 
-    <link 
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-rel="stylesheet"> 
-</head> 
- 
-<body> 
-    <div class="container mt-5"> 
-        <h2>Form Input Data Dosen</h2> 
-        <hr> 
- 
-        @if ($errors->any()) 
-        <div class="alert alert-danger"> 
-            <strong>Whoops!</strong> Terjadi kesalahan input.<br><br> 
-            <ul> 
-                @foreach ($errors->all() as $error) 
-                <li>{{ $error }}</li> 
-                @endforeach 
-            </ul> 
-        </div> 
-        @endif 
- 
-        <form action="{{ route('dosen.store') }}" method="POST"> 
-            @csrf 
-            <div class="mb-3"> 
-                <label for="nama" class="form-label">Nama Dosen</label> 
-              <input type="text" class="form-control" id="nama" name="nama" required> 
+@extends('layouts.app')
+
+@section('header')
+    {{-- Judul halaman yang besar dan tebal, sesuai contoh --}}
+    <h2 class="font-bold text-3xl text-gray-800 dark:text-gray-50 leading-tight">
+        {{ __('Input Data Dosen Baru') }}
+    </h2>
+@endsection
+
+@section('content')
+    <div class="py-12">
+        {{-- Mengatur lebar form menjadi medium (max-w-3xl) agar fokus --}}
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            {{-- Kartu Konten Utama dengan gaya yang disederhanakan --}}
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-xl p-8">
+                
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6 border-b pb-2 border-gray-200 dark:border-gray-700">
+                    Lengkapi Detail Dosen
+                </h3>
+
+                {{-- Notifikasi Error yang konsisten dengan contoh --}}
+                @if ($errors->any()) 
+                    <div class="bg-red-100 border border-red-400 text-red-700 dark:bg-red-900 dark:border-red-700 dark:text-red-300 px-4 py-3 rounded-lg relative mb-6" role="alert"> 
+                        <strong class="font-bold block mb-1">Whoops!</strong> Terjadi kesalahan input.<br>
+                        <ul class="list-disc ml-5 text-sm"> 
+                            @foreach ($errors->all() as $error) 
+                                <li>{{ $error }}</li> 
+                            @endforeach 
+                        </ul> 
+                    </div> 
+                @endif 
+
+                {{-- Form Tambah Dosen --}}
+                <form action="{{ route('dosen.store') }}" method="POST"> 
+                    @csrf 
+
+                    {{-- Input Nama --}}
+                    <div class="mb-5"> 
+                        <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Dosen</label> 
+                        <input type="text" 
+                            class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" 
+                            id="nama" name="nama" value="{{ old('nama') }}" required autofocus placeholder="Masukkan nama lengkap"> 
+                        @error('nama')<p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>@enderror
+                    </div> 
+
+                    {{-- Input NIDN --}}
+                    <div class="mb-5"> 
+                        <label for="nidn" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">NIDN</label> 
+                        <input type="text" 
+                            class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" 
+                            id="nidn" name="nidn" value="{{ old('nidn') }}" required placeholder="Contoh: 1234567890"> 
+                        @error('nidn')<p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>@enderror
+                    </div> 
+
+                    {{-- Input Jabatan Fungsional --}}
+                    <div class="mb-5"> 
+                        <label for="jabatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jabatan Fungsional</label> 
+                        <input type="text" 
+                            class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" 
+                            id="jabatan" name="jabatan" value="{{ old('jabatan') }}" required placeholder="Contoh: Lektor Kepala"> 
+                        @error('jabatan')<p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>@enderror
+                    </div> 
+
+                    {{-- Input Email --}}
+                    <div class="mb-5"> 
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label> 
+                        <input type="email" 
+                            class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" 
+                            id="email" name="email" value="{{ old('email') }}" required placeholder="dosen@universitas.ac.id"> 
+                        @error('email')<p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>@enderror
+                    </div> 
+
+                    {{-- Input Telepon --}}
+                    <div class="mb-5"> 
+                        <label for="telepon" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telepon/HP</label> 
+                        <input type="text" 
+                            class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" 
+                            id="telepon" name="telepon" value="{{ old('telepon') }}" required placeholder="Contoh: 08123456789"> 
+                        @error('telepon')<p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>@enderror
+                    </div> 
+
+                    <div class="flex gap-3 pt-2">
+                        {{-- Tombol Simpan (Primary -> Indigo) --}}
+                        <button type="submit" class="px-5 py-2 bg-indigo-600 text-white text-base font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            Simpan Data
+                        </button> 
+                        
+                        {{-- Tombol Kembali (Secondary -> Gray) --}}
+                        <a href="{{ route('dosen.index') }}" class="px-5 py-2 bg-gray-500 text-white text-base font-medium rounded-lg shadow-md hover:bg-gray-600 transition duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            Kembali
+                        </a> 
+                    </div>
+                </form> 
+                
             </div>
-            <div class="mb-3"> 
-                <label for="nidn" class="form-label">NIDN</label> 
-             <input type="text" class="form-control" id="nidn" name="nidn" required> 
-            </div> 
-            <div class="mb-3"> 
-                <label for="jabatan" class="form-label">Jabatan</label> 
-              <input type="text" class="form-control" id="jabatan" name="jabatan" required>
-            </div>
-            <div class="mb-3"> 
-                <label for="email" class="form-label">Email</label> 
-                <input type="email" class="form-control" id="email" name="email" required> 
-            </div> 
-            <div class="mb-3"> 
-                <label for="telepon" class="form-label">Telepon</label> 
-                <input type="text" class="form-control" id="telepon" name="telepon" required> 
-            </div> 
-            <button type="submit" class="btn btn-primary">Simpan</button> 
-            <a href="{{ route('dosen.index') }}" class="btn btn-secondary">  
-            Kembali</a> 
-        </form> 
-    </div> 
-</body> 
-</html> 
+        </div>
+    </div>
+@endsection

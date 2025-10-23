@@ -1,94 +1,94 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Daftar Dosen</title> 
-    <link 
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-rel="stylesheet"> 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-</head> 
-<body> 
+@extends('layouts.app')
 
+@section('header')
+    {{-- Konsisten dengan design header profesional --}}
+    <h2 class="font-bold text-3xl text-gray-800 dark:text-gray-50 leading-tight">
+        {{ __('Daftar Data Dosen') }}
+    </h2>
+@endsection
 
+@section('content')
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-xl p-6">
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-  <div class="container-fluid">
-    
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="../mahasiswa/">Mahasiswa</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/dosen">Dosen</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="../matakuliah/">Mata Kuliah</a>
-        </li>
-        
+                @if (session('success'))
+                    {{-- Menggunakan alert style Tailwind --}}
+                    <div class="bg-teal-100 border border-teal-400 text-teal-700 dark:bg-teal-900 dark:border-teal-700 dark:text-teal-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                        <strong class="font-bold">Sukses!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                {{-- Tombol Aksi (Hanya Tampil untuk Admin) --}}
+                @if(Auth::check() && Auth::user()->role == 'admin')
+                    <div class="mb-6 flex flex-wrap gap-3 items-center">
+                        <a href="{{ route('dosen.create') }}" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow">
+                            Tambah Dosen
+                        </a>
+                        {{-- Tombol Cetak PDF Dihapus sesuai rute web.php --}}
+                    </div>
+                @endif
+
+                {{-- Tabel Data --}}
+                <div class="shadow-md rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">No</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">NIDN</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jabatan</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Telepon</th>
+                                
+                                @if(Auth::check() && Auth::user()->role == 'admin')
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            @forelse ($dosens as $dosen)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition duration-150">
+                                    {{-- Menggunakan iterasi loop sederhana --}}
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $dosen->nama }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dosen->nidn }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dosen->jabatan}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dosen->email}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dosen->telepon}}</td>
+                                    
+                                    @if(Auth::check() && Auth::user()->role == 'admin')
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                            <a href="{{ route('dosen.edit', $dosen->id) }}" class="inline-block px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-md hover:bg-amber-600 transition duration-150 mr-2">
+                                                Edit
+                                            </a>
+                                            <form action="{{ route('dosen.destroy', $dosen->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data dosen {{ $dosen->nama }}?');"> 
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="px-3 py-1 bg-red-600 text-white text-xs font-semibold rounded-md hover:bg-red-700 transition duration-150">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="{{ (Auth::check() && Auth::user()->role == 'admin') ? 7 : 6 }}" class="px-6 py-4 whitespace-nowrap text-center text-base text-gray-500 dark:text-gray-400">
+                                        Belum ada data dosen.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                
+                {{-- Tautan Paginasi Laravel dihapus sesuai permintaan agar tidak membuat "page" --}}
+
+            </div>
+        </div>
     </div>
-  </div>
-</nav>
-
-    <div class="container mt-5">
-         <h2>Daftar Data Dosen</h2> 
-        <hr> 
-        <a href="{{ route('dosen.create') }}" class="btn btn-primary mb-3">Tambah Dosen</a> 
- 
-        @if (session('success')) 
-        <div class="alert alert-success"> 
-            {{ session('success') }} 
-        </div> 
-        @endif 
- 
-        <table class="table table-bordered"> 
-            <thead class="table-dark"> 
-                <tr> 
-                    <th>No</th> 
-                    <th>Nama</th> 
-                    <th>NIDN</th> 
-                    <th>JABATAN</th> 
-                    <th>Email</th>
-                    <th>TELEPON</th>
-                    <th>Aksi</th> 
-                </tr> 
-            </thead> 
-            <tbody> 
-                @forelse ($dosens as $dosen) 
-                <tr> 
-                    <td>{{ $loop->iteration }}</td> 
-                    <td>{{ $dosen->nama}}</td> 
-                    <td>{{ $dosen->nidn}}</td> 
-                    <td>{{ $dosen->jabatan}}</td> 
-                    <td>{{ $dosen->email}}</td>
-                    <td>{{ $dosen->telepon}}</td>
-                    <td> 
-                        <a href="{{ route('dosen.edit', $dosen->id) }}" class="btn btn-warning btn-sm">Edit</a> 
- 
-                        <form action="{{ route('dosen.destroy', $dosen->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');"> 
-                            @csrf 
-                            @method('DELETE') 
-                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button> 
-                        </form> 
-                    </td>
-                </tr> 
-                @empty 
-                <tr> 
-                    <td colspan="7" class="text-center">Belum ada data.</td> 
-                </tr> 
-                @endforelse 
-            </tbody> 
-        </table> 
-    </div> 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
-</body> 
-</html>
+@endsection

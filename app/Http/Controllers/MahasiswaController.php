@@ -130,7 +130,8 @@ class MahasiswaController extends Controller
         $pdf = PDF::loadView('mahasiswa.pdf',['mahasiswas' => $mahasiswas]);
 
         // 3. perintahkan untuk mengunduh file pdf dengan nama Laporan_data_mahasiswa.pdf
-        return $pdf->download('Laporan_data_mahasiswa.pdf');
+        return $pdf->stream('Laporan_data_mahasiswa.pdf');
+        
     }
 
 }
