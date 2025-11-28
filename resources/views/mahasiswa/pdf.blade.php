@@ -106,6 +106,7 @@
                 <th style="width: 10%;">NIM</th>
                 <th style="width: 15%;">Jenis Kelamin</th>
                 <th style="width: 20%;">Prodi</th>
+                <th style="width: 15%;">Dosen Wali</th>
                 <th style="width: 10%;">Angkatan</th>
                 <th style="width: 15%;">Tgl Lahir</th>
             </tr>

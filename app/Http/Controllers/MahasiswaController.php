@@ -7,6 +7,7 @@ use Illuminate\Http\Request; // Pastikan Anda telah membuat model Mahasiswa di a
 use App\Imports\MahasiswasImport; // Pastikan Anda telah membuat import ini di app/Imports
 use Maatwebsite\Excel\Facades\Excel; // Pastikan Anda telah menginstal paket Maatwebsite Excel minimal versi 3
 use Barryvdh\DomPDF\Facade\Pdf; // Pastikan Anda telah menginstal paket barryvdh/laravel-dompdf
+use App\Models\Dosen;
 
 class MahasiswaController extends Controller
 {
@@ -41,17 +42,23 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-    $mahasiswas = Mahasiswa::orderBy('created_at', 'DESC')->get();
-    return view('mahasiswa.index', compact('mahasiswas')); // Perbaikan di sini
+
+        $mahasiswas = Mahasiswa::orderBy('created_at', 'DESC')->get();
+        return view('mahasiswa.index', compact('mahasiswas')); // Perbaikan di sini
+
+        // join dengan dosen untuk menampilkan nama dosen wali
+        $mahasiswas = Mahasiswa::with('dosen')->latest()->get();
+        return view('mahasiswa.index', compact('mahasiswas'));
     }
-
-
+    
     /**
      * Menampilkan form untuk membuat mahasiswa baru.
      */
     public function create()
     {
-        return view('mahasiswa.create');
+        
+        $dosens = Dosen::all();
+        return view('mahasiswa.create', compact('dosens'));
     }
 
     /**
@@ -65,6 +72,7 @@ class MahasiswaController extends Controller
             'nim' => 'required|string|unique:mahasiswas,nim|max:10',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'prodi' => 'required|string|max:255',
+            'dosen_wali' => 'required|string|max:255',
             'tahun_angkatan' => 'required|digits:4',
             'tanggal_lahir' => 'required|date',
         ]);
@@ -82,7 +90,10 @@ class MahasiswaController extends Controller
      */
     public function edit(Mahasiswa $mahasiswa)
     {
-        return view('mahasiswa.edit', compact('mahasiswa'));    
+          
+        $dosens = Dosen::all();
+        return view('mahasiswa.edit', compact('mahasiswa', 'dosens'));
+        
     }
 
     /**
@@ -96,6 +107,7 @@ class MahasiswaController extends Controller
             'nim' => 'required|string|max:10|unique:mahasiswas,nim,' . $mahasiswa->id,
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'prodi' => 'required|string|max:255',
+            'dosen_wali' => 'required|string|max:255',
             'tahun_angkatan' => 'required|digits:4',
             'tanggal_lahir' => 'required|date',
         ]);

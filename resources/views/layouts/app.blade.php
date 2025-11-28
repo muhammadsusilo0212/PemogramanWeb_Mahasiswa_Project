@@ -13,31 +13,50 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased h-full">
-    {{-- Menggunakan dark:bg-gray-900 di sini sudah tepat --}}
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-        @include('layouts.navigation')
+    
+    {{-- START: PERBAIKAN STRUKTUR UTAMA KE SIDEBAR LAYOUT --}}
+    
+    {{-- Container utama harus menggunakan FLEX HORIZONTAL dan mengisi seluruh tinggi layar --}}
+    <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+        
+        {{-- 1. Sidebar Navigasi (W-64, Fixed) --}}
+        {{-- File layouts.navigation Anda HARUS berisi kode Sidebar Vertikal yang baru --}}
+        @include('layouts.navigation') 
 
-        @hasSection('header')
-            {{-- Ditingkatkan: Menggunakan shadow-xl untuk bayangan yang lebih tegas dan border yang lebih tipis --}}
-            <header class="bg-white dark:bg-gray-800 shadow-xl border-b border-indigo-500/10 dark:border-indigo-500/5">
-                <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-                    @yield('header')
+        {{-- 2. Main Content Area (Mengisi sisa ruang, diatur secara vertikal, dan bisa discroll) --}}
+        <div class="flex-grow flex flex-col overflow-y-auto">
+            
+            {{-- Bagian Header Halaman (@yield('header')) dan Konten Utama (@yield('content')) --}}
+            {{-- HAPUS: Tag <header> lama yang menyebabkan konten turun --}}
+            
+            {{-- Header Halaman Didaftar di sini (akan muncul di atas konten) --}}
+            @hasSection('header')
+                {{-- Menggunakan div sederhana untuk header halaman --}}
+                <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                    {{-- Container ini HANYA untuk styling header di desktop --}}
+                    <div class="py-5 px-6 lg:px-8"> 
+                        @yield('header')
+                    </div>
                 </div>
-            </header>
-        @endif
+            @endif
 
-        <main class="flex-grow">
-            @yield('content')
-        </main>
+            {{-- Area Konten Utama (Konten Ruang Kuliah) --}}
+            {{-- Menggunakan p-6 untuk padding di sekitar konten --}}
+            <main class="flex-grow p-6"> 
+                @yield('content')
+            </main>
 
-        {{-- Ditingkatkan: Border dan latar belakang yang sangat netral --}}
-        <footer class="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 mt-auto">
-            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-xs text-gray-400 dark:text-gray-500">
-                    &copy; {{ date('Y') }} {{ config('app.name', 'MuhammadSusilo') }}. Hak Cipta Dilindungi. Versi Tailwind CSS.
-                </p>
-            </div>
-        </footer>
+            {{-- Footer diletakkan di dalam Main Content Area --}}
+            <footer class="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 mt-auto">
+                <div class="py-4 px-6 lg:px-8">
+                    <p class="text-center text-xs text-gray-400 dark:text-gray-500">
+                        &copy; {{ date('Y') }} {{ config('app.name', 'MuhammadSusilo') }}. Hak Cipta Dilindungi. Versi Tailwind CSS.
+                    </p>
+                </div>
+            </footer>
+        </div>
     </div>
+    {{-- END: PERBAIKAN STRUKTUR UTAMA KE SIDEBAR LAYOUT --}}
+    
 </body>
 </html>

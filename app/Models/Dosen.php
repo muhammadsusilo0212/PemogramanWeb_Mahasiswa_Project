@@ -17,4 +17,9 @@ class Dosen extends Model
         'email',
         'telepon',
     ];
+
+    public function mahasiswas()
+    {
+        return $this->hasMany(Mahasiswa::class);
+    }
 }

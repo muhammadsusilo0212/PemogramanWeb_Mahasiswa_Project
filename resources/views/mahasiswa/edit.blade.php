@@ -83,6 +83,31 @@
                             name="prodi" value="{{ old('prodi', $mahasiswa->prodi) }}" required> 
                         @error('prodi')<p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>@enderror
                     </div> 
+                    {{-- Input Dosen Wali --}}
+                    <div class="mb-5"> 
+                <label for="dosen_wali" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dosen Wali (NIDN)</label> 
+                
+                <select 
+                    class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" 
+                    name="dosen_wali" 
+                    required                    >
+                        <option value="">-- Pilih Dosen Wali --</option>
+                        {{-- Loop melalui data dosen untuk membuat pilihan --}}
+                        @foreach($dosens as $dosen)
+                            <option 
+                                value="{{ $dosen->nidn }}" 
+                                {{-- Gunakan old() untuk mempertahankan nilai saat validasi gagal, atau nilai yang sudah ada dari $mahasiswa --}}
+                                {{ (old('dosen_wali', $mahasiswa->dosen_wali) == $dosen->nidn) ? 'selected' : '' }}
+                            >
+                                {{ $dosen->nidn }} - {{ $dosen->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('dosen_wali')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>  
 
                     {{-- Input Tahun Angkatan (Select) --}}
                     <div class="mb-5"> 

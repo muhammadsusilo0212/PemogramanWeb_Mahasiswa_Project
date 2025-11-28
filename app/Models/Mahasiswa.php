@@ -14,7 +14,14 @@ class Mahasiswa extends Model
         'nim',
         'jenis_kelamin',
         'prodi',
+        'dosen_wali',
         'tahun_angkatan',
         'tanggal_lahir'
+        
     ];
+    // Relasi ke model Dosen satu mahasiswa memiliki satu dosen wali
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_wali', 'nidn');
+    }
 }

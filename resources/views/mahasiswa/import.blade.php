@@ -77,6 +77,7 @@
                         <code class="bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 py-0.5 rounded text-xs font-mono break-all">nim</code>, 
                         <code class="bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 py-0.5 rounded text-xs font-mono break-all">jenis_kelamin</code>, 
                         <code class="bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 py-0.5 rounded text-xs font-mono break-all">prodi</code>, 
+                        <code class="bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 py-0.5 rounded text-xs font-mono break-all">dosen_wali</code>,
                         <code class="bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 py-0.5 rounded text-xs font-mono break-all">tahun_angkatan</code>, 
                         <code class="bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-1 py-0.5 rounded text-xs font-mono break-all">tanggal_lahir</code>.
                     </p> 

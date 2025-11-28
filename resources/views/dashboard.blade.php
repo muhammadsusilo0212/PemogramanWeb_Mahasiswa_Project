@@ -1,66 +1,74 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard')
+
 @section('header')
-    <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold leading-tight text-gray-900 dark:text-white">
-            Dashboard
-        </h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-            Selamat datang kembali, {{ Auth::user()->name ?? 'Admin' }}
-        </p>
-    </div>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+    <h2 class="font-extrabold text-3xl text-gray-800 dark:text-gray-50 leading-tight">
+        {{ __('Dashboard') }}
+    </h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+        Selamat datang kembali, <span class="text-indigo-600 dark:text-indigo-400 font-semibold">{{ Auth::user()->name }}</span>!
+    </p>
+</div>
 @endsection
 
 @section('content')
-    <div class="py-6 px-4 sm:px-6 lg:px-8">
-        {{-- Statistik Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Data Dosen -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Data Dosen</h3>
-                    <svg class="h-6 w-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M12 4v16m8-8H4" />
-                    </svg>
+<div class="pb-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        {{-- Card Summary --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            
+            {{-- Card: Data Dosen --}}
+            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-indigo-700 dark:to-purple-800 rounded-xl shadow-lg p-6 text-white transform hover:scale-102 transition-all duration-300">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Data Dosen</h3>
+                    <div class="bg-indigo-700/50 dark:bg-purple-900/50 p-2 rounded-full">
+                        {{-- PERBAIKAN: Menambahkan fill="none" dan stroke="currentColor" --}}
+                        <svg class="w-6 h-6 text-indigo-200 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A7 7 0 0112 15a7 7 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
                 </div>
-                <p class="text-3xl font-bold text-gray-700 dark:text-gray-200">25</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Total dosen terdaftar</p>
+                <p class="text-5xl font-extrabold mb-1">{{ $totalDosen ?? 25 }}</p>
+                <p class="text-indigo-100 dark:text-purple-200 text-sm opacity-90">Total dosen terdaftar</p>
             </div>
 
-            <!-- Data Mahasiswa -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Data Mahasiswa</h3>
-                    <svg class="h-6 w-6 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M5 13l4 4L19 7" />
-                    </svg>
+            {{-- Card: Data Mahasiswa --}}
+            <div class="bg-gradient-to-br from-green-500 to-teal-600 dark:from-green-700 dark:to-teal-800 rounded-xl shadow-lg p-6 text-white transform hover:scale-102 transition-all duration-300">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Data Mahasiswa</h3>
+                    <div class="bg-green-700/50 dark:bg-teal-900/50 p-2 rounded-full">
+                        {{-- Ikon Mahasiswa sudah benar --}}
+                        <svg class="w-6 h-6 text-green-200 dark:text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2c0-.586-.151-1.157-.432-1.666-.28-.51-.685-.92-1.178-1.177C14.898 14.897 14.48 14.75 14 14.75h-4a3 3 0 00-3 3v2h10zM12 12a4 4 0 100-8 4 4 0 000 8z"></path></svg>
+                    </div>
                 </div>
-                <p class="text-3xl font-bold text-gray-700 dark:text-gray-200">120</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Mahasiswa aktif saat ini</p>
+                <p class="text-5xl font-extrabold mb-1">{{ $totalMahasiswa ?? 120 }}</p>
+                <p class="text-green-100 dark:text-teal-200 text-sm opacity-90">Mahasiswa aktif saat ini</p>
             </div>
 
-            <!-- Data Ruang Kuliah -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Data Ruang Kuliah</h3>
-                    <svg class="h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M3 10h18M9 21V3M15 21V3" />
-                    </svg>
+            {{-- Card: Data Ruang Kuliah --}}
+            <div class="bg-gradient-to-br from-yellow-500 to-orange-600 dark:from-yellow-700 dark:to-orange-800 rounded-xl shadow-lg p-6 text-white transform hover:scale-102 transition-all duration-300">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Data Ruang Kuliah</h3>
+                    <div class="bg-yellow-700/50 dark:bg-orange-900/50 p-2 rounded-full">
+                        {{-- PERBAIKAN: Menambahkan fill="none" dan stroke="currentColor" --}}
+                        <svg class="w-6 h-6 text-yellow-200 dark:text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-7 0H3m20 0h3"></path></svg>
+                    </div>
                 </div>
-                <p class="text-3xl font-bold text-gray-700 dark:text-gray-200">10</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Jumlah ruang kuliah tersedia</p>
+                <p class="text-5xl font-extrabold mb-1">{{ $totalRuangKuliah ?? 10 }}</p>
+                <p class="text-yellow-100 dark:text-orange-200 text-sm opacity-90">Jumlah ruang kuliah tersedia</p>
             </div>
         </div>
 
-        {{-- Section Tambahan --}}
-        <div class="mt-10">
-            <h4 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Informasi Sistem</h4>
-            <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 p-4 rounded-md">
-                <p>Silakan gunakan sidebar untuk mengelola data dosen, mahasiswa, dan ruang kuliah.</p>
-            </div>
+        {{-- Informasi Sistem Card --}}
+        <div class="bg-gray-800 dark:bg-gray-700 rounded-xl shadow-lg p-6 text-gray-50 dark:text-gray-200">
+            <h3 class="text-xl font-bold mb-4">Informasi Sistem</h3>
+            <p class="text-gray-200 dark:text-gray-300 leading-relaxed">
+                Silakan gunakan sidebar untuk mengelola data <span class="font-semibold text-indigo-400">dosen</span>, 
+                <span class="font-semibold text-indigo-400">mahasiswa</span>, dan 
+                <span class="font-semibold text-indigo-400">ruang kuliah</span>. 
+                Sistem ini dirancang untuk memudahkan manajemen akademik Anda.
+            </p>
         </div>
     </div>
+</div>
 @endsection
